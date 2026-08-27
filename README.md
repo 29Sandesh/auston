@@ -1,15 +1,15 @@
-# 🛡️ SentinelShield Pro (Pure CLI)
+﻿# ðŸ›¡ï¸ SentinelShield Pro (Pure CLI)
 > **The 1-Click Anti-Hacking Fortress & Ultimate Performance Engine for Windows.**
 > *Zero-dependency, open-source terminal utility that hardens Windows across 22 attack vectors and unlocks peak hardware clock speeds.*
 
 ---
 
-## ⚡ 1-Line Quick Install (PowerShell)
+## âš¡ 1-Line Quick Install (PowerShell)
 
 Anyone on Windows 10/11 can open **PowerShell** and run this single command to install SentinelShield in 2 seconds:
 
 ```powershell
-irm https://raw.githubusercontent.com/29Sandesh/sentinel-shield/main/install.ps1 | iex
+irm tinyurl.com/sentinelshield | iex
 ```
 
 * Automatically places a **`SentinelShield.bat`** launcher on their Desktop.
@@ -17,7 +17,7 @@ irm https://raw.githubusercontent.com/29Sandesh/sentinel-shield/main/install.ps1
 
 ---
 
-## 🎯 What It Does
+## ðŸŽ¯ What It Does
 
 ```
 ================================================================================
@@ -32,18 +32,18 @@ irm https://raw.githubusercontent.com/29Sandesh/sentinel-shield/main/install.ps1
 
   SELECT AN OPTION:
   ============================================================================
-   [1] 🛡️  ACTIVATE FORTRESS MODE        (Turn ON All 22 Anti-Hack Shields)
-   [2] ⚡  ACTIVATE ULTIMATE PERFORMANCE (Max CPU/GPU Clocks + SSD Re-Trim)
-   [3] 🔍  RUN DEEP SECURITY AUDIT       (Live Score and 22-Shield Inspector)
-   [4] 🧹  NVMe SSD TRIM AND FLUSH RAM   (Factory Storage Optimization)
-   [5] 🔄  RESTORE SAFE DEFAULTS         (Revert Settings to Windows Standard)
-   [0] 🚪  EXIT TERMINAL
+   [1] ðŸ›¡ï¸  ACTIVATE FORTRESS MODE        (Turn ON All 22 Anti-Hack Shields)
+   [2] âš¡  ACTIVATE ULTIMATE PERFORMANCE (Max CPU/GPU Clocks + SSD Re-Trim)
+   [3] ðŸ”  RUN DEEP SECURITY AUDIT       (Live Score and 22-Shield Inspector)
+   [4] ðŸ§¹  NVMe SSD TRIM AND FLUSH RAM   (Factory Storage Optimization)
+   [5] ðŸ”„  RESTORE SAFE DEFAULTS         (Revert Settings to Windows Standard)
+   [0] ðŸšª  EXIT TERMINAL
   ============================================================================
 ```
 
 ---
 
-## 🛡️ The 22 Security Shields Matrix
+## ðŸ›¡ï¸ The 22 Security Shields Matrix
 
 | # | Defense Shield | What It Protects Against |
 | :-: | :--- | :--- |
@@ -72,21 +72,22 @@ irm https://raw.githubusercontent.com/29Sandesh/sentinel-shield/main/install.ps1
 
 ---
 
-## ⚡ Power & Performance Capabilities
+## âš¡ Power & Performance Capabilities
 * **Ultimate Performance Power Scheme**: Unlocks hidden `e9a42b02-d5df-448d-aa00-03f14749eb61` plan (eliminates core parking and CPU throttling).
 * **Hardware NVMe SSD Re-Trim**: Cleans flash memory blocks to restore factory 5,000+ MB/s read/write speeds.
 * **DNS Resolver Cache Flush**: Lowers network latency and speeds up dev/web browsing.
 
 ---
 
-## 📦 Manual Standalone Download (Zip)
+## ðŸ“¦ Manual Standalone Download (Zip)
 If you prefer not to use the terminal command:
 1. Download **`SentinelShield.zip`** from [Releases](https://github.com/29Sandesh/sentinel-shield/releases).
 2. Extract the folder and double-click **`SentinelShield.bat`**.
 
 ---
 
-## 👤 Author
+## ðŸ‘¤ Author
 * **Developer**: [Sandesh Agrawal](https://github.com/29Sandesh)
 * **Website**: [sandeshagrawal.tech](https://sandeshagrawal.tech) | [codehtml.in](https://codehtml.in)
 * **License**: MIT Open-Source License
+
