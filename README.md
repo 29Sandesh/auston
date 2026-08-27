@@ -1,23 +1,31 @@
-﻿# ðŸ›¡ï¸ SentinelShield Pro (Pure CLI)
+# 🛡️ SentinelShield Pro (Pure CLI)
+[![GitHub Stars](https://img.shields.io/github/stars/29Sandesh/sentinel-shield?style=for-the-badge&color=brightgreen)](https://github.com/29Sandesh/sentinel-shield/stargazers)
+[![Platform](https://img.shields.io/badge/Platform-Windows%2010%20%7C%2011-blue?style=for-the-badge&logo=windows)](https://github.com/29Sandesh/sentinel-shield)
+[![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
+
 > **The 1-Click Anti-Hacking Fortress & Ultimate Performance Engine for Windows.**
 > *Zero-dependency, open-source terminal utility that hardens Windows across 22 attack vectors and unlocks peak hardware clock speeds.*
 
 ---
 
-## âš¡ 1-Line Quick Install (PowerShell)
+## ⚡ 1-Line Quick Install (Official GitHub)
 
-Anyone on Windows 10/11 can open **PowerShell** and run this single command to install SentinelShield in 2 seconds:
+Open **PowerShell** and paste this official command to install SentinelShield in 2 seconds:
 
 ```powershell
-irm tinyurl.com/sentinelshield | iex
+irm https://raw.githubusercontent.com/29Sandesh/sentinel-shield/main/install.ps1 | iex
 ```
 
-* Automatically places a **`SentinelShield.bat`** launcher on their Desktop.
-* Adds **`sentinel`** to their system terminal PATH so they can run it from any command prompt.
+*(Or without `https://`: `irm raw.githubusercontent.com/29Sandesh/sentinel-shield/main/install.ps1 | iex`)*
+
+#### What happens automatically:
+* 📥 Instantly downloads `sentinel.ps1` to your local machine.
+* 🚀 Places a **`SentinelShield.bat`** launcher on your Desktop.
+* ⌨️ Adds **`sentinel`** to your system terminal PATH so you can type `sentinel` in any terminal to launch it anytime!
 
 ---
 
-## ðŸŽ¯ What It Does
+## 🎯 What It Looks Like in Terminal
 
 ```
 ================================================================================
@@ -32,18 +40,18 @@ irm tinyurl.com/sentinelshield | iex
 
   SELECT AN OPTION:
   ============================================================================
-   [1] ðŸ›¡ï¸  ACTIVATE FORTRESS MODE        (Turn ON All 22 Anti-Hack Shields)
-   [2] âš¡  ACTIVATE ULTIMATE PERFORMANCE (Max CPU/GPU Clocks + SSD Re-Trim)
-   [3] ðŸ”  RUN DEEP SECURITY AUDIT       (Live Score and 22-Shield Inspector)
-   [4] ðŸ§¹  NVMe SSD TRIM AND FLUSH RAM   (Factory Storage Optimization)
-   [5] ðŸ”„  RESTORE SAFE DEFAULTS         (Revert Settings to Windows Standard)
-   [0] ðŸšª  EXIT TERMINAL
+   [1] 🛡️  ACTIVATE FORTRESS MODE        (Turn ON All 22 Anti-Hack Shields)
+   [2] ⚡  ACTIVATE ULTIMATE PERFORMANCE (Max CPU/GPU Clocks + SSD Re-Trim)
+   [3] 🔍  RUN DEEP SECURITY AUDIT       (Live Score and 22-Shield Inspector)
+   [4] 🧹  NVMe SSD TRIM AND FLUSH RAM   (Factory Storage Optimization)
+   [5] 🔄  RESTORE SAFE DEFAULTS         (Revert Settings to Windows Standard)
+   [0] 🚪  EXIT TERMINAL
   ============================================================================
 ```
 
 ---
 
-## ðŸ›¡ï¸ The 22 Security Shields Matrix
+## 🛡️ The 22 Security Shields Matrix
 
 | # | Defense Shield | What It Protects Against |
 | :-: | :--- | :--- |
@@ -72,22 +80,12 @@ irm tinyurl.com/sentinelshield | iex
 
 ---
 
-## âš¡ Power & Performance Capabilities
-* **Ultimate Performance Power Scheme**: Unlocks hidden `e9a42b02-d5df-448d-aa00-03f14749eb61` plan (eliminates core parking and CPU throttling).
-* **Hardware NVMe SSD Re-Trim**: Cleans flash memory blocks to restore factory 5,000+ MB/s read/write speeds.
-* **DNS Resolver Cache Flush**: Lowers network latency and speeds up dev/web browsing.
+## ⭐ Support & Star the Project
+If you find SentinelShield helpful, please **give the repository a ⭐ on [GitHub](https://github.com/29Sandesh/sentinel-shield)**!
 
 ---
 
-## ðŸ“¦ Manual Standalone Download (Zip)
-If you prefer not to use the terminal command:
-1. Download **`SentinelShield.zip`** from [Releases](https://github.com/29Sandesh/sentinel-shield/releases).
-2. Extract the folder and double-click **`SentinelShield.bat`**.
-
----
-
-## ðŸ‘¤ Author
-* **Developer**: [Sandesh Agrawal](https://github.com/29Sandesh)
+## 👤 Author
+* **Developer**: [Sandesh Agrawal (@29Sandesh)](https://github.com/29Sandesh)
 * **Website**: [sandeshagrawal.tech](https://sandeshagrawal.tech) | [codehtml.in](https://codehtml.in)
 * **License**: MIT Open-Source License
-
