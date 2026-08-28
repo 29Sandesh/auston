@@ -1,4 +1,4 @@
-# SentinelShield Pro v3.0 (God-Tier Edition)
+# AMEN v3.0 (God-Tier Edition) - The Ultimate Windows Security and Performance Fortress
 param (
     [switch]$Fortress,
     [switch]$Performance,
@@ -7,16 +7,18 @@ param (
     [switch]$Restore
 )
 
-$Host.UI.RawUI.WindowTitle = 'SENTINELSHIELD PRO v3.0 - GOD-TIER SECURITY AND PERFORMANCE FORTRESS'
+$Host.UI.RawUI.WindowTitle = 'AMEN v3.0 - WINDOWS SECURITY AND PERFORMANCE FORTRESS'
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 function Show-Banner {
     Clear-Host
     Write-Host '================================================================================' -ForegroundColor Cyan
-    Write-Host '    ____             __  _            __  _____ __    _      __    __' -ForegroundColor Cyan
-    Write-Host '   / __/__ ___  ___ / /_(_)__  ___   / / / ___// /_  (_)__  / /___/ /' -ForegroundColor Cyan
-    Write-Host '  _\ \/ -_) _ \/ _ / __/ / _ \/ -_) / /__\__ \/ _ \/ / -_)/ / _  / ' -ForegroundColor Cyan
-    Write-Host ' /___/\__/_//_/\__/\__/_/_//_/\__/ /____/____/_//_/_/\__//_/\_,_/  ' -ForegroundColor Cyan
+    Write-Host '          ___       ___  ___  _______   ___      ___ ' -ForegroundColor Cyan
+    Write-Host '         /   \     |   \/   ||   ____| |   \    |   |' -ForegroundColor Cyan
+    Write-Host '        /  ^  \    |  \  /  ||  |__    |  . \   |   |' -ForegroundColor Cyan
+    Write-Host '       /  /_\  \   |  |\/|  ||   __|   |  |\ \  |   |' -ForegroundColor Cyan
+    Write-Host '      /  _____  \  |  |  |  ||  |____  |  | \ \ |   |' -ForegroundColor Cyan
+    Write-Host '     /__/     \__\ |__|  |__||_______| |__|  \_\|___|' -ForegroundColor Cyan
     Write-Host '                                                  [ GOD-TIER v3.0 ]' -ForegroundColor Yellow
     Write-Host '================================================================================' -ForegroundColor Cyan
     Write-Host '  30-Shield Matrix  |  DoH DNS  |  Live Threat Radar  |  GPU and Power Boost' -ForegroundColor Gray
@@ -63,7 +65,7 @@ function Get-SecurityAudit {
 
     $hostsPath = "$env:windir\System32\drivers\etc\hosts"
     $hostsContent = if (Test-Path $hostsPath) { Get-Content $hostsPath -Raw -ErrorAction SilentlyContinue } else { '' }
-    $results['OS-Level Adware and Malware Hosts Shield'] = ($hostsContent -match 'SentinelShield Hosts Blocklist')
+    $results['OS-Level Adware and Malware Hosts Shield'] = ($hostsContent -match 'AMEN Hosts Blocklist')
 
     # Category B: Exploit and Credential Theft (ASR Rules) (6)
     $asrIds = $pref.AttackSurfaceReductionRules_Ids
@@ -222,7 +224,7 @@ function Enable-FortressMode {
     Set-ItemProperty -Path $siuf -Name 'NumberOfSIUFInPeriod' -Value 0 -Type DWord -Force
 
     Write-Host ''
-    Write-Host '[FORTRESS SUCCESS] All 30 Shields are now FULLY ACTIVATED!' -ForegroundColor Green
+    Write-Host '[AMEN FORTRESS SUCCESS] All 30 Shields are now FULLY ACTIVATED!' -ForegroundColor Green
 }
 
 function Enable-EncryptedDNS {
@@ -253,7 +255,7 @@ function Enable-HostsAdBlocker {
     $blocklistRules = @"
 
 # ==============================================================================
-# SentinelShield Hosts Blocklist: Telemetry, Adware and Tracking Kill (Auto-Generated)
+# AMEN Hosts Blocklist: Telemetry, Adware and Tracking Kill (Auto-Generated)
 # ==============================================================================
 0.0.0.0 telemetry.microsoft.com
 0.0.0.0 vortex.data.microsoft.com
@@ -274,7 +276,7 @@ function Enable-HostsAdBlocker {
 "@
     
     $current = Get-Content $hostsPath -Raw
-    if ($current -notmatch 'SentinelShield Hosts Blocklist') {
+    if ($current -notmatch 'AMEN Hosts Blocklist') {
         Add-Content -Path $hostsPath -Value $blocklistRules -Encoding UTF8
         Show-ProgressAnim 'Injecting Core Telemetry and Tracker Domain Filters'
     } else {
@@ -288,7 +290,7 @@ function Enable-HostsAdBlocker {
 function Show-ThreatRadar {
     Show-Banner
     Write-Host '================================================================================' -ForegroundColor Cyan
-    Write-Host '                       LIVE NETWORK AND THREAT RADAR' -ForegroundColor Yellow
+    Write-Host '                       AMEN LIVE NETWORK AND THREAT RADAR' -ForegroundColor Yellow
     Write-Host '================================================================================' -ForegroundColor Cyan
     Write-Host " Press [Enter] to return to Main Menu`n" -ForegroundColor Gray
     
@@ -404,14 +406,14 @@ if ($Restore) { Show-Banner; Restore-SafeDefaults; exit }
 # --- INTERACTIVE TERMINAL LOOP ---
 while ($true) {
     Show-Banner
-    Write-Host '  FORTRESS AND SECURITY:' -ForegroundColor Yellow
+    Write-Host '  AMEN FORTRESS AND SECURITY:' -ForegroundColor Yellow
     Write-Host '   [1] ACTIVATE FORTRESS MODE        (Turn ON All 30 Anti-Hack Shields)' -ForegroundColor Green
     Write-Host '   [2] ENFORCE ENCRYPTED DNS (DoH)   (Cloudflare 1.1.1.1 + Malware Shield)' -ForegroundColor Cyan
     Write-Host '   [3] ACTIVATE HOSTS AD/SPY BLOCKER (Block 50,000+ Telemetry Domains)' -ForegroundColor Magenta
     Write-Host '   [4] RUN DEEP SECURITY AUDIT       (Live 0-100 Score and 30-Shield Matrix)' -ForegroundColor Yellow
     Write-Host '   [5] LAUNCH LIVE THREAT RADAR      (Real-Time Open Ports and Connections)' -ForegroundColor White
     Write-Host ''
-    Write-Host '  PERFORMANCE AND GAMING:' -ForegroundColor Yellow
+    Write-Host '  AMEN PERFORMANCE AND GAMING:' -ForegroundColor Yellow
     Write-Host '   [6] ACTIVATE ULTIMATE PERFORMANCE (Max CPU/GPU Clocks + RAM Flush)' -ForegroundColor Cyan
     Write-Host '   [7] GPU SHADER AND LATENCY BOOST  (Purge DXCache + Lower GPU Latency)' -ForegroundColor Green
     Write-Host '   [8] SAFE WINDOWS DEBLOATER        (Remove OEM Bloat and Telemetry Apps)' -ForegroundColor Yellow
@@ -442,7 +444,7 @@ while ($true) {
         }
         'D' { Restore-SafeDefaults; Read-Host "`nPress Enter to continue..." }
         'd' { Restore-SafeDefaults; Read-Host "`nPress Enter to continue..." }
-        '0' { Write-Host "`nExiting SentinelShield CLI. Stay safe!" -ForegroundColor Cyan; exit }
+        '0' { Write-Host "`nExiting AMEN CLI. Stay safe!" -ForegroundColor Cyan; exit }
         default { Write-Host 'Invalid choice!' -ForegroundColor Red; Start-Sleep -Seconds 1 }
     }
 }

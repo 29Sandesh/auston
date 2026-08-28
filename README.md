@@ -1,6 +1,6 @@
-# 🛡️ SentinelShield Pro v3.0 (God-Tier Edition)
-[![GitHub Stars](https://img.shields.io/github/stars/29Sandesh/sentinel-shield?style=for-the-badge&color=brightgreen)](https://github.com/29Sandesh/sentinel-shield/stargazers)
-[![Platform](https://img.shields.io/badge/Platform-Windows%2010%20%7C%2011-blue?style=for-the-badge&logo=windows)](https://github.com/29Sandesh/sentinel-shield)
+# 🛡️ AMEN v3.0 (God-Tier Edition)
+[![GitHub Stars](https://img.shields.io/github/stars/29Sandesh/amen?style=for-the-badge&color=brightgreen)](https://github.com/29Sandesh/amen/stargazers)
+[![Platform](https://img.shields.io/badge/Platform-Windows%2010%20%7C%2011-blue?style=for-the-badge&logo=windows)](https://github.com/29Sandesh/amen)
 [![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
 
 > **The 1-Click Anti-Hacking Fortress & Ultimate Performance Engine for Windows.**
@@ -10,14 +10,14 @@
 
 ## ⚡ 1-Line Quick Install (PowerShell)
 
-Open **PowerShell** and paste this official command to install SentinelShield in 2 seconds:
+Open **PowerShell** and paste this official command to install AMEN in 2 seconds:
 
 ```powershell
-irm https://raw.githubusercontent.com/29Sandesh/sentinel-shield/main/install.ps1 | iex
+irm https://raw.githubusercontent.com/29Sandesh/amen/main/install.ps1 | iex
 ```
 
-* Automatically places a **`SentinelShield.bat`** launcher on your Desktop.
-* Adds **`sentinel`** to your system terminal PATH so you can type `sentinel` in any terminal to launch it anytime!
+* Automatically places an **`AMEN.bat`** launcher on your Desktop.
+* Adds **`amen`** to your system terminal PATH so you can type `amen` in any terminal to launch it anytime!
 
 ---
 
@@ -25,23 +25,25 @@ irm https://raw.githubusercontent.com/29Sandesh/sentinel-shield/main/install.ps1
 
 ```
 ================================================================================
-    ____             __  _            __  _____ __    _      __    __
-   / __/__ ___  ___ / /_(_)__  ___   / / / ___// /_  (_)__  / /___/ /
-  _\ \/ -_) _ \/ _ / __/ / _ \/ -_) / /__\__ \/ _ \/ / -_)/ / _  / 
- /___/\__/_//_/\__/\__/_/_//_/\__/ /____/____/_//_/_/\__//_/\_,_/  
+          ___       ___  ___  _______   ___      ___ 
+         /   \     |   \/   ||   ____| |   \    |   |
+        /  ^  \    |  \  /  ||  |__    |  . \   |   |
+       /  /_\  \   |  |\/|  ||   __|   |  |\ \  |   |
+      /  _____  \  |  |  |  ||  |____  |  | \ \ |   |
+     /__/     \__\ |__|  |__||_______| |__|  \_\|___|
                                                   [ GOD-TIER v3.0 ]
 ================================================================================
   30-Shield Matrix  |  DoH DNS  |  Live Threat Radar  |  GPU and Power Boost
 ================================================================================
 
-  FORTRESS AND SECURITY:
+  AMEN FORTRESS AND SECURITY:
    [1] 🛡️  ACTIVATE FORTRESS MODE        (Turn ON All 30 Anti-Hack Shields)
    [2] 🌐  ENFORCE ENCRYPTED DNS (DoH)   (Cloudflare 1.1.1.1 + Malware Shield)
    [3] 🚫  ACTIVATE HOSTS AD/SPY BLOCKER (Block 50,000+ Telemetry Domains)
    [4] 🔍  RUN DEEP SECURITY AUDIT       (Live 0-100 Score and 30-Shield Matrix)
    [5] 📡  LAUNCH LIVE THREAT RADAR      (Real-Time Open Ports and Connections)
 
-  PERFORMANCE AND GAMING:
+  AMEN PERFORMANCE AND GAMING:
    [6] ⚡  ACTIVATE ULTIMATE PERFORMANCE (Max CPU/GPU Clocks + RAM Flush)
    [7] 🎮  GPU SHADER AND LATENCY BOOST  (Purge DXCache + Lower GPU Latency)
    [8] 🧹  SAFE WINDOWS DEBLOATER        (Remove OEM Bloat and Telemetry Apps)
@@ -100,7 +102,7 @@ irm https://raw.githubusercontent.com/29Sandesh/sentinel-shield/main/install.ps1
 ---
 
 ## ⭐ Support & Star the Project
-If you find SentinelShield helpful, please **give the repository a ⭐ on [GitHub](https://github.com/29Sandesh/sentinel-shield)**!
+If you find AMEN helpful, please **give the repository a ⭐ on [GitHub](https://github.com/29Sandesh/amen)**!
 
 ---
 
