@@ -1,23 +1,23 @@
-# 🛡️ AMEN v3.0 (God-Tier Edition)
-[![GitHub Stars](https://img.shields.io/github/stars/29Sandesh/amen?style=for-the-badge&color=brightgreen)](https://github.com/29Sandesh/amen/stargazers)
-[![Platform](https://img.shields.io/badge/Platform-Windows%2010%20%7C%2011-blue?style=for-the-badge&logo=windows)](https://github.com/29Sandesh/amen)
+# 🤖 AUSTON v3.0 (Droid Edition)
+[![GitHub Stars](https://img.shields.io/github/stars/29Sandesh/auston?style=for-the-badge&color=brightgreen)](https://github.com/29Sandesh/auston/stargazers)
+[![Platform](https://img.shields.io/badge/Platform-Windows%2010%20%7C%2011-blue?style=for-the-badge&logo=windows)](https://github.com/29Sandesh/auston)
 [![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
 
-> **The 1-Click Anti-Hacking Fortress & Ultimate Performance Engine for Windows.**
+> **The Autonomous Windows Security Fortress & Ultimate Performance Droid.**
 > *Zero-dependency, open-source terminal utility that hardens Windows across 30 attack vectors, activates Encrypted DNS (DoH), provides a Live Network Threat Radar, debloats Windows, and unlocks peak CPU/GPU hardware clock speeds.*
 
 ---
 
 ## ⚡ 1-Line Quick Install (PowerShell)
 
-Open **PowerShell** and paste this official command to install AMEN in 2 seconds:
+Open **PowerShell** and paste this official command to install AUSTON in 2 seconds:
 
 ```powershell
-irm https://raw.githubusercontent.com/29Sandesh/amen/main/install.ps1 | iex
+irm https://raw.githubusercontent.com/29Sandesh/auston/main/install.ps1 | iex
 ```
 
-* Automatically places an **`AMEN.bat`** launcher on your Desktop.
-* Adds **`amen`** to your system terminal PATH so you can type `amen` in any terminal to launch it anytime!
+* Automatically places an **`Auston.bat`** launcher on your Desktop.
+* Adds **`auston`** to your system terminal PATH so you can type `auston` in any terminal to launch it anytime!
 
 ---
 
@@ -25,25 +25,25 @@ irm https://raw.githubusercontent.com/29Sandesh/amen/main/install.ps1 | iex
 
 ```
 ================================================================================
-          ___       ___  ___  _______   ___      ___ 
-         /   \     |   \/   ||   ____| |   \    |   |
-        /  ^  \    |  \  /  ||  |__    |  . \   |   |
-       /  /_\  \   |  |\/|  ||   __|   |  |\ \  |   |
-      /  _____  \  |  |  |  ||  |____  |  | \ \ |   |
-     /__/     \__\ |__|  |__||_______| |__|  \_\|___|
-                                                  [ GOD-TIER v3.0 ]
+    ___      __    __   _______.___________.  ______   .__   __. 
+   /   \    |  |  |  | /       |           | /  __  \  |  \ |  | 
+  /  ^  \   |  |  |  ||   (----`---|  |----`|  |  |  | |   \|  | 
+ /  /_\  \  |  |  |  | \   \       |  |     |  |  |  | |  . `  | 
+/  _____  \ |  `--'  |.-)   |      |  |     |  `--'  | |  |\   | 
+/__/     \__\ \______/ |_______/       |__|      \______/  |__| \__| 
+                                                  [ DROID v3.0 ]
 ================================================================================
   30-Shield Matrix  |  DoH DNS  |  Live Threat Radar  |  GPU and Power Boost
 ================================================================================
 
-  AMEN FORTRESS AND SECURITY:
+  AUSTON FORTRESS AND SECURITY:
    [1] 🛡️  ACTIVATE FORTRESS MODE        (Turn ON All 30 Anti-Hack Shields)
    [2] 🌐  ENFORCE ENCRYPTED DNS (DoH)   (Cloudflare 1.1.1.1 + Malware Shield)
    [3] 🚫  ACTIVATE HOSTS AD/SPY BLOCKER (Block 50,000+ Telemetry Domains)
    [4] 🔍  RUN DEEP SECURITY AUDIT       (Live 0-100 Score and 30-Shield Matrix)
    [5] 📡  LAUNCH LIVE THREAT RADAR      (Real-Time Open Ports and Connections)
 
-  AMEN PERFORMANCE AND GAMING:
+  AUSTON PERFORMANCE AND GAMING:
    [6] ⚡  ACTIVATE ULTIMATE PERFORMANCE (Max CPU/GPU Clocks + RAM Flush)
    [7] 🎮  GPU SHADER AND LATENCY BOOST  (Purge DXCache + Lower GPU Latency)
    [8] 🧹  SAFE WINDOWS DEBLOATER        (Remove OEM Bloat and Telemetry Apps)
@@ -102,7 +102,7 @@ irm https://raw.githubusercontent.com/29Sandesh/amen/main/install.ps1 | iex
 ---
 
 ## ⭐ Support & Star the Project
-If you find AMEN helpful, please **give the repository a ⭐ on [GitHub](https://github.com/29Sandesh/amen)**!
+If you find AUSTON helpful, please **give the repository a ⭐ on [GitHub](https://github.com/29Sandesh/auston)**!
 
 ---
 

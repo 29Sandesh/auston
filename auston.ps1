@@ -1,4 +1,4 @@
-# AMEN v3.0 (God-Tier Edition) - The Ultimate Windows Security and Performance Fortress
+# AUSTON v3.0 (Droid Edition) - The Autonomous Windows Security and Performance Droid
 param (
     [switch]$Fortress,
     [switch]$Performance,
@@ -7,19 +7,19 @@ param (
     [switch]$Restore
 )
 
-$Host.UI.RawUI.WindowTitle = 'AMEN v3.0 - WINDOWS SECURITY AND PERFORMANCE FORTRESS'
+$Host.UI.RawUI.WindowTitle = 'AUSTON v3.0 - AUTONOMOUS SECURITY AND PERFORMANCE DROID'
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 function Show-Banner {
     Clear-Host
     Write-Host '================================================================================' -ForegroundColor Cyan
-    Write-Host '          ___       ___  ___  _______   ___      ___ ' -ForegroundColor Cyan
-    Write-Host '         /   \     |   \/   ||   ____| |   \    |   |' -ForegroundColor Cyan
-    Write-Host '        /  ^  \    |  \  /  ||  |__    |  . \   |   |' -ForegroundColor Cyan
-    Write-Host '       /  /_\  \   |  |\/|  ||   __|   |  |\ \  |   |' -ForegroundColor Cyan
-    Write-Host '      /  _____  \  |  |  |  ||  |____  |  | \ \ |   |' -ForegroundColor Cyan
-    Write-Host '     /__/     \__\ |__|  |__||_______| |__|  \_\|___|' -ForegroundColor Cyan
-    Write-Host '                                                  [ GOD-TIER v3.0 ]' -ForegroundColor Yellow
+    Write-Host '    ___      __    __   _______.___________.  ______   .__   __. ' -ForegroundColor Cyan
+    Write-Host '   /   \    |  |  |  | /       |           | /  __  \  |  \ |  | ' -ForegroundColor Cyan
+    Write-Host '  /  ^  \   |  |  |  ||   (----`---|  |----`|  |  |  | |   \|  | ' -ForegroundColor Cyan
+    Write-Host ' /  /_\  \  |  |  |  | \   \       |  |     |  |  |  | |  . `  | ' -ForegroundColor Cyan
+    Write-Host '/  _____  \ |  `--`  |.-)   |      |  |     |  `--`  | |  |\   | ' -ForegroundColor Cyan
+    Write-Host '/__/     \__\ \______/ |_______/       |__|      \______/  |__| \__| ' -ForegroundColor Cyan
+    Write-Host '                                                  [ DROID v3.0 ]' -ForegroundColor Yellow
     Write-Host '================================================================================' -ForegroundColor Cyan
     Write-Host '  30-Shield Matrix  |  DoH DNS  |  Live Threat Radar  |  GPU and Power Boost' -ForegroundColor Gray
     Write-Host '================================================================================' -ForegroundColor Cyan
@@ -65,7 +65,7 @@ function Get-SecurityAudit {
 
     $hostsPath = "$env:windir\System32\drivers\etc\hosts"
     $hostsContent = if (Test-Path $hostsPath) { Get-Content $hostsPath -Raw -ErrorAction SilentlyContinue } else { '' }
-    $results['OS-Level Adware and Malware Hosts Shield'] = ($hostsContent -match 'AMEN Hosts Blocklist')
+    $results['OS-Level Adware and Malware Hosts Shield'] = ($hostsContent -match 'AUSTON Hosts Blocklist')
 
     # Category B: Exploit and Credential Theft (ASR Rules) (6)
     $asrIds = $pref.AttackSurfaceReductionRules_Ids
@@ -148,7 +148,7 @@ function Get-SecurityAudit {
 
 function Enable-FortressMode {
     Write-Host ''
-    Write-Host '[*] ACTIVATING FORTRESS MODE (ENABLING ALL 30 SHIELDS)...' -ForegroundColor Cyan
+    Write-Host '[*] ACTIVATING AUSTON FORTRESS MODE (ENABLING ALL 30 SHIELDS)...' -ForegroundColor Cyan
     Write-Host ''
     
     Show-ProgressAnim 'Enabling Defender Network C2 and Phishing Blocker'
@@ -224,7 +224,7 @@ function Enable-FortressMode {
     Set-ItemProperty -Path $siuf -Name 'NumberOfSIUFInPeriod' -Value 0 -Type DWord -Force
 
     Write-Host ''
-    Write-Host '[AMEN FORTRESS SUCCESS] All 30 Shields are now FULLY ACTIVATED!' -ForegroundColor Green
+    Write-Host '[AUSTON FORTRESS SUCCESS] All 30 Shields are now FULLY ACTIVATED!' -ForegroundColor Green
 }
 
 function Enable-EncryptedDNS {
@@ -255,7 +255,7 @@ function Enable-HostsAdBlocker {
     $blocklistRules = @"
 
 # ==============================================================================
-# AMEN Hosts Blocklist: Telemetry, Adware and Tracking Kill (Auto-Generated)
+# AUSTON Hosts Blocklist: Telemetry, Adware and Tracking Kill (Auto-Generated)
 # ==============================================================================
 0.0.0.0 telemetry.microsoft.com
 0.0.0.0 vortex.data.microsoft.com
@@ -276,7 +276,7 @@ function Enable-HostsAdBlocker {
 "@
     
     $current = Get-Content $hostsPath -Raw
-    if ($current -notmatch 'AMEN Hosts Blocklist') {
+    if ($current -notmatch 'AUSTON Hosts Blocklist') {
         Add-Content -Path $hostsPath -Value $blocklistRules -Encoding UTF8
         Show-ProgressAnim 'Injecting Core Telemetry and Tracker Domain Filters'
     } else {
@@ -290,7 +290,7 @@ function Enable-HostsAdBlocker {
 function Show-ThreatRadar {
     Show-Banner
     Write-Host '================================================================================' -ForegroundColor Cyan
-    Write-Host '                       AMEN LIVE NETWORK AND THREAT RADAR' -ForegroundColor Yellow
+    Write-Host '                      AUSTON LIVE NETWORK AND THREAT RADAR' -ForegroundColor Yellow
     Write-Host '================================================================================' -ForegroundColor Cyan
     Write-Host " Press [Enter] to return to Main Menu`n" -ForegroundColor Gray
     
@@ -305,7 +305,7 @@ function Show-ThreatRadar {
 
 function Enable-UltimatePerformance {
     Write-Host ''
-    Write-Host '[*] ACTIVATING ULTIMATE PERFORMANCE MODE...' -ForegroundColor Cyan
+    Write-Host '[*] ACTIVATING AUSTON ULTIMATE PERFORMANCE MODE...' -ForegroundColor Cyan
     
     Show-ProgressAnim 'Unlocking Windows Ultimate Performance Power Plan'
     $schemes = powercfg /list
@@ -406,14 +406,14 @@ if ($Restore) { Show-Banner; Restore-SafeDefaults; exit }
 # --- INTERACTIVE TERMINAL LOOP ---
 while ($true) {
     Show-Banner
-    Write-Host '  AMEN FORTRESS AND SECURITY:' -ForegroundColor Yellow
+    Write-Host '  AUSTON FORTRESS AND SECURITY:' -ForegroundColor Yellow
     Write-Host '   [1] ACTIVATE FORTRESS MODE        (Turn ON All 30 Anti-Hack Shields)' -ForegroundColor Green
     Write-Host '   [2] ENFORCE ENCRYPTED DNS (DoH)   (Cloudflare 1.1.1.1 + Malware Shield)' -ForegroundColor Cyan
     Write-Host '   [3] ACTIVATE HOSTS AD/SPY BLOCKER (Block 50,000+ Telemetry Domains)' -ForegroundColor Magenta
     Write-Host '   [4] RUN DEEP SECURITY AUDIT       (Live 0-100 Score and 30-Shield Matrix)' -ForegroundColor Yellow
     Write-Host '   [5] LAUNCH LIVE THREAT RADAR      (Real-Time Open Ports and Connections)' -ForegroundColor White
     Write-Host ''
-    Write-Host '  AMEN PERFORMANCE AND GAMING:' -ForegroundColor Yellow
+    Write-Host '  AUSTON PERFORMANCE AND GAMING:' -ForegroundColor Yellow
     Write-Host '   [6] ACTIVATE ULTIMATE PERFORMANCE (Max CPU/GPU Clocks + RAM Flush)' -ForegroundColor Cyan
     Write-Host '   [7] GPU SHADER AND LATENCY BOOST  (Purge DXCache + Lower GPU Latency)' -ForegroundColor Green
     Write-Host '   [8] SAFE WINDOWS DEBLOATER        (Remove OEM Bloat and Telemetry Apps)' -ForegroundColor Yellow
@@ -444,7 +444,7 @@ while ($true) {
         }
         'D' { Restore-SafeDefaults; Read-Host "`nPress Enter to continue..." }
         'd' { Restore-SafeDefaults; Read-Host "`nPress Enter to continue..." }
-        '0' { Write-Host "`nExiting AMEN CLI. Stay safe!" -ForegroundColor Cyan; exit }
+        '0' { Write-Host "`nExiting AUSTON Droid. Stay safe!" -ForegroundColor Cyan; exit }
         default { Write-Host 'Invalid choice!' -ForegroundColor Red; Start-Sleep -Seconds 1 }
     }
 }
