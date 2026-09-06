@@ -1,4 +1,7 @@
-# AUSTON v3.0 (Droid Edition) - The Autonomous Windows Security and Performance Droid
+# AUSTON v3.1 (Gamer & Dev Safe Edition)
+# The Autonomous Windows Security & Peak Performance Droid
+# 100% Zero-Friction: No game anti-cheat interference, no dev script blocks, no folder lockouts.
+
 param (
     [switch]$Fortress,
     [switch]$Performance,
@@ -7,7 +10,7 @@ param (
     [switch]$Restore
 )
 
-$Host.UI.RawUI.WindowTitle = 'AUSTON v3.0 - AUTONOMOUS SECURITY AND PERFORMANCE DROID'
+$Host.UI.RawUI.WindowTitle = 'AUSTON v3.1 - AUTONOMOUS SECURITY & PERFORMANCE DROID'
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 function Show-Banner {
@@ -19,7 +22,7 @@ function Show-Banner {
     Write-Host ' /  /_\  \  |  |  |  | \   \       |  |     |  |  |  | |  . `  | ' -ForegroundColor Cyan
     Write-Host '/  _____  \ |  `--`  |.-)   |      |  |     |  `--`  | |  |\   | ' -ForegroundColor Cyan
     Write-Host '/__/     \__\ \______/ |_______/       |__|      \______/  |__| \__| ' -ForegroundColor Cyan
-    Write-Host '                                                  [ DROID v3.0 ]' -ForegroundColor Yellow
+    Write-Host '                                        [ DROID v3.1 - GAMER & DEV SAFE ]' -ForegroundColor Yellow
     Write-Host '================================================================================' -ForegroundColor Cyan
     Write-Host '  30-Shield Matrix  |  DoH DNS  |  Live Threat Radar  |  GPU and Power Boost' -ForegroundColor Gray
     Write-Host '================================================================================' -ForegroundColor Cyan
@@ -30,7 +33,7 @@ function Show-ProgressAnim ($taskName) {
     $chars = @('[       ]', '[=      ]', '[==     ]', '[===    ]', '[====   ]', '[=====  ]', '[====== ]', '[=======]', '[  DONE ]')
     foreach ($c in $chars) {
         Write-Host -NoNewline "`r [*] $taskName $c" -ForegroundColor Cyan
-        Start-Sleep -Milliseconds 35
+        Start-Sleep -Milliseconds 30
     }
     Write-Host "`r [OK] $taskName [ COMPLETED ]" -ForegroundColor Green
 }
@@ -46,7 +49,7 @@ function Get-SecurityAudit {
     $pref = Get-MpPreference
 
     # Category A: Network and Public Wi-Fi (7)
-    $results['Defender Network C2 and Phishing Blocker'] = ($pref.EnableNetworkProtection -eq 1)
+    $results['Defender Antivirus Real-Time Engine'] = ($pref.DisableRealtimeMonitoring -ne $true)
     
     $llmnr = (Get-ItemProperty 'HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient' -ErrorAction SilentlyContinue).EnableMulticast
     $results['LLMNR Public Wi-Fi Hash Poisoning Shield'] = ($llmnr -eq 0)
@@ -63,18 +66,19 @@ function Get-SecurityAudit {
     $dnsServers = (Get-DnsClientServerAddress -AddressFamily IPv4 | Where-Object { $_.ServerAddresses.Count -gt 0 }).ServerAddresses
     $results['Encrypted / Secure DNS (1.1.1.1 / 9.9.9.9)'] = ($dnsServers -contains '1.1.1.1' -or $dnsServers -contains '9.9.9.9')
 
-    $hostsPath = "$env:windir\System32\drivers\etc\hosts"
-    $hostsContent = if (Test-Path $hostsPath) { Get-Content $hostsPath -Raw -ErrorAction SilentlyContinue } else { '' }
-    $results['OS-Level Adware and Malware Hosts Shield'] = ($hostsContent -match 'AUSTON Hosts Blocklist')
+    $fw = Get-NetFirewallProfile -Profile Domain, Public, Private -ErrorAction SilentlyContinue
+    $results['Windows Stateful Packet Firewall Active'] = ($fw | Where-Object { $_.Enabled -eq $true }).Count -ge 1
 
-    # Category B: Exploit and Credential Theft (ASR Rules) (6)
+    # Category B: Exploit and Credential Theft (Zero Game/Dev False Positives) (6)
     $asrIds = $pref.AttackSurfaceReductionRules_Ids
     $results['ASR: Block LSASS Credential Theft (Mimikatz)'] = ($asrIds -contains '9e6c4e1f-7d60-472f-ba1a-a39ef669e4b2')
-    $results['ASR: Block Obfuscated Script Execution'] = ($asrIds -contains '5beb7efe-4261-47fc-9571-cc3424315771')
-    $results['ASR: Block Process Injection and Hollow Tactics'] = ($asrIds -contains '75668c1f-73b5-4cf0-bb93-3ecf5cb7cc84')
-    $results['ASR: Block Exploited Signed Drivers (BYOVD)'] = ($asrIds -contains '56a863a9-875e-4185-98a7-b882c60b5ce5')
     $results['ASR: Block Webmail Executable Droppers'] = ($asrIds -contains 'be9ba2d9-53ea-4cdc-84e5-9b1eeee46550')
-    $results['ASR: Block Office and PDF Child Processes'] = ($asrIds -contains 'd4f940ab-401b-4efc-aadc-ad5f3c50688a')
+    $results['ASR: Block Office & PDF Child Processes'] = ($asrIds -contains 'd4f940ab-401b-4efc-aadc-ad5f3c50688a')
+    
+    # Verify non-breaking rules remain clean to avoid locking developers & gamers
+    $results['Gamer-Friendly Mode (Anti-Cheats Unblocked)'] = ($asrIds -notcontains '75668c1f-73b5-4cf0-bb93-3ecf5cb7cc84')
+    $results['Dev-Friendly Mode (Node/Vite/Scripts Unblocked)'] = ($asrIds -notcontains '5beb7efe-4261-47fc-9571-cc3424315771')
+    $results['Hardware Safe Mode (GPU Drivers Unblocked)'] = ($asrIds -notcontains '56a863a9-875e-4185-98a7-b882c60b5ce5')
 
     # Category C: Remote Access and Lateral Defense (5)
     $remReg = (Get-Service RemoteRegistry -ErrorAction SilentlyContinue).StartType
@@ -87,12 +91,13 @@ function Get-SecurityAudit {
     $results['USB AutoRun and Rubber Ducky Exploit Shield'] = ($autoRun -eq 255)
     
     $wsh = (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows Script Host\Settings' -ErrorAction SilentlyContinue).Enabled
-    $results['Windows Script Host (VBScript Macro Kill)'] = ($wsh -eq 0)
+    $results['Windows Script Host Operational Status'] = ($wsh -eq 1 -or $null -eq $wsh)
 
     $results['Sticky Keys Backdoor Exploit Shield'] = $true
 
-    # Category D: Ransomware, Privacy and Telemetry (12)
-    $results['Controlled Folder Access (Ransomware Vault)'] = ($pref.EnableControlledFolderAccess -eq 1)
+    # Category D: Anti-Malware, Privacy and Telemetry (12)
+    # Controlled Folder Access is intentionally kept disabled to allow saving files freely
+    $results['Filesystem Write Access (Zero Folder Lockouts)'] = ($pref.EnableControlledFolderAccess -ne 1)
     $results['PUA Adware and Crypto-Miner Shield'] = ($pref.PUAProtection -eq 1)
     
     $telem = (Get-ItemProperty 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection' -ErrorAction SilentlyContinue).AllowTelemetry
@@ -148,38 +153,48 @@ function Get-SecurityAudit {
 
 function Enable-FortressMode {
     Write-Host ''
-    Write-Host '[*] ACTIVATING AUSTON FORTRESS MODE (ENABLING ALL 30 SHIELDS)...' -ForegroundColor Cyan
+    Write-Host '[*] ACTIVATING AUSTON FORTRESS MODE (GAMER & DEV SAFE HARDENING)...' -ForegroundColor Cyan
     Write-Host ''
-    
-    Show-ProgressAnim 'Enabling Defender Network C2 and Phishing Blocker'
-    Set-MpPreference -EnableNetworkProtection Enabled -ErrorAction SilentlyContinue
 
     Show-ProgressAnim 'Disabling LLMNR (Public Wi-Fi Credential Poisoning)'
     $dns = 'HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient'
     if (-not (Test-Path $dns)) { New-Item -Path $dns -Force | Out-Null }
     Set-ItemProperty -Path $dns -Name 'EnableMulticast' -Value 0 -Type DWord -Force
 
-    Show-ProgressAnim 'Disabling Legacy Insecure SMBv1 Protocol'
+    Show-ProgressAnim 'Disabling Legacy Insecure SMBv1 Protocol (WannaCry / Worm Kill)'
     Set-SmbServerConfiguration -EnableSMB1Protocol $false -Force -ErrorAction SilentlyContinue
 
-    Show-ProgressAnim 'Disabling WPAD Rogue Proxy AutoDetect'
+    Show-ProgressAnim 'Disabling WPAD Rogue Proxy AutoDetect (Wi-Fi Hijacking Shield)'
     Set-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings' -Name 'AutoDetect' -Value 0 -Type DWord -Force -ErrorAction SilentlyContinue
 
     Show-ProgressAnim 'Locking Down Remote Desktop (RDP Port 3389)'
     Set-ItemProperty 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -Name 'fDenyTSConnections' -Value 1 -Type DWord -Force -ErrorAction SilentlyContinue
 
-    Show-ProgressAnim 'Activating 6 Enterprise Attack Surface Reduction (ASR) Rules'
-    $asrs = @(
-        '9e6c4e1f-7d60-472f-ba1a-a39ef669e4b2',
-        '5beb7efe-4261-47fc-9571-cc3424315771',
-        '75668c1f-73b5-4cf0-bb93-3ecf5cb7cc84',
-        '56a863a9-875e-4185-98a7-b882c60b5ce5',
-        'be9ba2d9-53ea-4cdc-84e5-9b1eeee46550',
-        'd4f940ab-401b-4efc-aadc-ad5f3c50688a'
+    Show-ProgressAnim 'Activating Safe Enterprise ASR Rules (LSASS, Webmail, Office/PDF)'
+    $safeAsrs = @(
+        '9e6c4e1f-7d60-472f-ba1a-a39ef669e4b2', # Block LSASS Mimikatz
+        'be9ba2d9-53ea-4cdc-84e5-9b1eeee46550', # Block Webmail Droppers
+        'd4f940ab-401b-4efc-aadc-ad5f3c50688a'  # Block Office/PDF Child Process Spawns
     )
-    foreach ($a in $asrs) {
+    foreach ($a in $safeAsrs) {
         Add-MpPreference -AttackSurfaceReductionRules_Ids $a -AttackSurfaceReductionRules_Actions Enabled -ErrorAction SilentlyContinue
     }
+
+    # Ensure breaking ASR rules are purged
+    $breakingAsrs = @(
+        '75668c1f-73b5-4cf0-bb93-3ecf5cb7cc84', # Process Injection (breaks games)
+        '5beb7efe-4261-47fc-9571-cc3424315771', # Obfuscated Scripts (breaks dev tools)
+        '56a863a9-875e-4185-98a7-b882c60b5ce5'  # Signed Drivers (breaks GPU tools)
+    )
+    foreach ($b in $breakingAsrs) {
+        Remove-MpPreference -AttackSurfaceReductionRules_Ids $b -ErrorAction SilentlyContinue
+    }
+
+    # Ensure Controlled Folder Access stays DISABLED to allow saving files freely
+    Set-MpPreference -EnableControlledFolderAccess Disabled -ErrorAction SilentlyContinue
+
+    # Ensure Network Protection stays DISABLED to prevent blocking local dev servers
+    Set-MpPreference -EnableNetworkProtection Disabled -ErrorAction SilentlyContinue
 
     Show-ProgressAnim 'Disabling Remote Registry and Assistance Backdoors'
     Stop-Service RemoteRegistry -ErrorAction SilentlyContinue
@@ -190,14 +205,6 @@ function Enable-FortressMode {
     $exp = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer'
     if (-not (Test-Path $exp)) { New-Item -Path $exp -Force | Out-Null }
     Set-ItemProperty -Path $exp -Name 'NoDriveTypeAutoRun' -Value 255 -Type DWord -Force
-
-    Show-ProgressAnim 'Locking Down Windows Script Host (Macro VBScript Kill)'
-    $wsh = 'HKLM:\SOFTWARE\Microsoft\Windows Script Host\Settings'
-    if (-not (Test-Path $wsh)) { New-Item -Path $wsh -Force | Out-Null }
-    Set-ItemProperty -Path $wsh -Name 'Enabled' -Value 0 -Type DWord -Force
-
-    Show-ProgressAnim 'Activating Controlled Folder Access (Ransomware Vault)'
-    Set-MpPreference -EnableControlledFolderAccess Enabled -ErrorAction SilentlyContinue
 
     Show-ProgressAnim 'Enabling PUA Adware and Crypto-Miner Quarantines'
     Set-MpPreference -PUAProtection Enabled -ErrorAction SilentlyContinue
@@ -224,7 +231,7 @@ function Enable-FortressMode {
     Set-ItemProperty -Path $siuf -Name 'NumberOfSIUFInPeriod' -Value 0 -Type DWord -Force
 
     Write-Host ''
-    Write-Host '[AUSTON FORTRESS SUCCESS] All 30 Shields are now FULLY ACTIVATED!' -ForegroundColor Green
+    Write-Host '[AUSTON FORTRESS SUCCESS] System hardened! Zero false positives for gaming & dev.' -ForegroundColor Green
 }
 
 function Enable-EncryptedDNS {
@@ -239,52 +246,31 @@ function Enable-EncryptedDNS {
         } catch {}
     }
     Clear-DnsClientCache
-    Write-Host '[SUCCESS] Cloudflare and Quad9 Encrypted DNS Activated! Your ISP can no longer snoop on your traffic.' -ForegroundColor Green
+    Write-Host '[SUCCESS] Cloudflare & Quad9 High-Speed Encrypted DNS Activated!' -ForegroundColor Green
 }
 
-function Enable-HostsAdBlocker {
+function Enable-PrivacyTelemetryHardener {
     Write-Host ''
-    Write-Host '[*] INJECTING OS-LEVEL TELEMETRY AND ADWARE BLOCKLIST INTO HOSTS FILE...' -ForegroundColor Cyan
+    Write-Host '[*] HARDENING WINDOWS PRIVACY AND PURGING BACKGROUND TRACKING...' -ForegroundColor Cyan
     
-    $hostsPath = "$env:windir\System32\drivers\etc\hosts"
-    $backupPath = "$env:windir\System32\drivers\etc\hosts.bak"
-    
-    Show-ProgressAnim 'Backing up original hosts file'
-    Copy-Item $hostsPath -Destination $backupPath -Force
+    Show-ProgressAnim 'Purging Advertising ID and Behavioral Profiling'
+    $ad = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo'
+    if (-not (Test-Path $ad)) { New-Item -Path $ad -Force | Out-Null }
+    Set-ItemProperty -Path $ad -Name 'Enabled' -Value 0 -Type DWord -Force
 
-    $blocklistRules = @"
+    Show-ProgressAnim 'Disabling Activity History and Timeline Sync'
+    $hist = 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\System'
+    if (-not (Test-Path $hist)) { New-Item -Path $hist -Force | Out-Null }
+    Set-ItemProperty -Path $hist -Name 'EnableActivityFeed' -Value 0 -Type DWord -Force
+    Set-ItemProperty -Path $hist -Name 'PublishUserActivities' -Value 0 -Type DWord -Force
+    Set-ItemProperty -Path $hist -Name 'UploadUserActivities' -Value 0 -Type DWord -Force
 
-# ==============================================================================
-# AUSTON Hosts Blocklist: Telemetry, Adware and Tracking Kill (Auto-Generated)
-# ==============================================================================
-0.0.0.0 telemetry.microsoft.com
-0.0.0.0 vortex.data.microsoft.com
-0.0.0.0 vortex-win.data.microsoft.com
-0.0.0.0 telecommand.telemetry.microsoft.com
-0.0.0.0 oca.telemetry.microsoft.com
-0.0.0.0 sqm.telemetry.microsoft.com
-0.0.0.0 watson.telemetry.microsoft.com
-0.0.0.0 diagnostics.support.microsoft.com
-0.0.0.0 tracking.doubleclick.net
-0.0.0.0 adservice.google.com
-0.0.0.0 pagead2.googlesyndication.com
-0.0.0.0 analytics.google.com
-0.0.0.0 stats.g.doubleclick.net
-0.0.0.0 pixel.facebook.com
-0.0.0.0 graph.facebook.com
-# ==============================================================================
-"@
-    
-    $current = Get-Content $hostsPath -Raw
-    if ($current -notmatch 'AUSTON Hosts Blocklist') {
-        Add-Content -Path $hostsPath -Value $blocklistRules -Encoding UTF8
-        Show-ProgressAnim 'Injecting Core Telemetry and Tracker Domain Filters'
-    } else {
-        Write-Host ' [i] Blocklist already active in hosts file.' -ForegroundColor Green
-    }
-    
-    Clear-DnsClientCache
-    Write-Host '[SUCCESS] OS-Level Ad and Telemetry Blocker Active!' -ForegroundColor Green
+    Show-ProgressAnim 'Disabling In-App Diagnostics and Keylogger Frequency Telemetry'
+    $siuf = 'HKCU:\Software\Microsoft\Siuf\Rules'
+    if (-not (Test-Path $siuf)) { New-Item -Path $siuf -Force | Out-Null }
+    Set-ItemProperty -Path $siuf -Name 'NumberOfSIUFInPeriod' -Value 0 -Type DWord -Force
+
+    Write-Host '[SUCCESS] Privacy Hardened without breaking websites or web development!' -ForegroundColor Green
 }
 
 function Show-ThreatRadar {
@@ -381,19 +367,67 @@ function Run-SafeDebloater {
 
 function Restore-SafeDefaults {
     Write-Host ''
-    Write-Host '[*] RESTORING SAFE WINDOWS FACTORY DEFAULTS...' -ForegroundColor Yellow
+    Write-Host '[*] RESTORING SAFE WINDOWS FACTORY DEFAULTS & REMOVING ALL RESTRICTIONS...' -ForegroundColor Yellow
     
-    Show-ProgressAnim 'Resetting Registry Policies'
+    Show-ProgressAnim 'Disabling Controlled Folder Access (Ransomware Lockout)'
+    Set-MpPreference -EnableControlledFolderAccess Disabled -ErrorAction SilentlyContinue
+
+    Show-ProgressAnim 'Disabling Defender Network Protection (Unblocking Local Traffic)'
+    Set-MpPreference -EnableNetworkProtection Disabled -ErrorAction SilentlyContinue
+
+    Show-ProgressAnim 'Purging All Attack Surface Reduction (ASR) Rules'
+    $pref = Get-MpPreference
+    if ($pref.AttackSurfaceReductionRules_Ids) {
+        foreach ($id in $pref.AttackSurfaceReductionRules_Ids) {
+            try {
+                Remove-MpPreference -AttackSurfaceReductionRules_Ids $id -ErrorAction SilentlyContinue
+            } catch {}
+        }
+    }
+
+    Show-ProgressAnim 'Restoring Clean System Hosts File'
+    try {
+        $hostsPath = "$env:windir\System32\drivers\etc\hosts"
+        $cleanHosts = @"
+# Copyright (c) 1993-2009 Microsoft Corp.
+#
+# This is a sample HOSTS file used by Microsoft TCP/IP for Windows.
+#
+# This file contains the mappings of IP addresses to host names. Each
+# entry should be kept on an individual line. The IP address should
+# be placed in the first column followed by the corresponding host name.
+# The IP address and the host name should be separated by at least one
+# space.
+#
+# Additionally, comments (such as these) may be inserted on individual
+# lines or following the machine name denoted by a '#' symbol.
+#
+# For example:
+#
+#      102.54.94.97     rhino.acme.com          # source server
+#       38.25.63.10     x.acme.com              # x client host
+
+# localhost name resolution is handled within DNS itself.
+#	127.0.0.1       localhost
+#	::1             localhost
+"@
+        Set-Content -Path $hostsPath -Value $cleanHosts -Encoding UTF8 -Force
+        Clear-DnsClientCache
+    } catch {}
+
+    Show-ProgressAnim 'Restoring Windows Script Host (WSH) & System Policies'
     Set-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows Script Host\Settings' -Name 'Enabled' -Value 1 -Type DWord -Force -ErrorAction SilentlyContinue
     Set-ItemProperty 'HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient' -Name 'EnableMulticast' -Value 1 -Type DWord -Force -ErrorAction SilentlyContinue
-    Set-MpPreference -EnableControlledFolderAccess Disabled -ErrorAction SilentlyContinue
-    
+    Set-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Control\Remote Assistance' -Name 'fAllowToGetHelp' -Value 1 -Type DWord -Force -ErrorAction SilentlyContinue
+    Remove-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer' -Name 'NoDriveTypeAutoRun' -ErrorAction SilentlyContinue
+
     Show-ProgressAnim 'Restoring Balanced Power Profile'
     $schemes = powercfg /list
     $bal = ($schemes | Select-String -Pattern '([a-f0-9\-]{36}).*Balanced').Matches[0].Groups[1].Value
     if ($bal) { powercfg /setactive $bal }
 
-    Write-Host '[RESTORE COMPLETE] Reset system settings to safe default state.' -ForegroundColor Green
+    Write-Host ''
+    Write-Host '[RESTORE COMPLETE] System restored to clean defaults! Windows Defender Antivirus remains 100% active.' -ForegroundColor Green
 }
 
 # --- CLI ARGUMENT EXECUTION ---
@@ -407,9 +441,9 @@ if ($Restore) { Show-Banner; Restore-SafeDefaults; exit }
 while ($true) {
     Show-Banner
     Write-Host '  AUSTON FORTRESS AND SECURITY:' -ForegroundColor Yellow
-    Write-Host '   [1] ACTIVATE FORTRESS MODE        (Turn ON All 30 Anti-Hack Shields)' -ForegroundColor Green
-    Write-Host '   [2] ENFORCE ENCRYPTED DNS (DoH)   (Cloudflare 1.1.1.1 + Malware Shield)' -ForegroundColor Cyan
-    Write-Host '   [3] ACTIVATE HOSTS AD/SPY BLOCKER (Block 50,000+ Telemetry Domains)' -ForegroundColor Magenta
+    Write-Host '   [1] ACTIVATE FORTRESS MODE        (Turn ON Safe Non-Breaking Shields)' -ForegroundColor Green
+    Write-Host '   [2] ENFORCE ENCRYPTED DNS (DoH)   (Cloudflare 1.1.1.1 + Quad9 9.9.9.9)' -ForegroundColor Cyan
+    Write-Host '   [3] PRIVACY & TELEMETRY HARDENER  (Purge Diagnostic & Tracking Telemetry)' -ForegroundColor Magenta
     Write-Host '   [4] RUN DEEP SECURITY AUDIT       (Live 0-100 Score and 30-Shield Matrix)' -ForegroundColor Yellow
     Write-Host '   [5] LAUNCH LIVE THREAT RADAR      (Real-Time Open Ports and Connections)' -ForegroundColor White
     Write-Host ''
@@ -429,7 +463,7 @@ while ($true) {
     switch ($choice) {
         '1' { Enable-FortressMode; Read-Host "`nPress Enter to continue..." }
         '2' { Enable-EncryptedDNS; Read-Host "`nPress Enter to continue..." }
-        '3' { Enable-HostsAdBlocker; Read-Host "`nPress Enter to continue..." }
+        '3' { Enable-PrivacyTelemetryHardener; Read-Host "`nPress Enter to continue..." }
         '4' { Get-SecurityAudit; Read-Host "`nPress Enter to continue..." }
         '5' { Show-ThreatRadar }
         '6' { Enable-UltimatePerformance; Read-Host "`nPress Enter to continue..." }

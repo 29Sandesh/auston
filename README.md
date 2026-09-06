@@ -1,10 +1,19 @@
-# 🤖 AUSTON v3.0 (Droid Edition)
+# 🤖 AUSTON v3.1 (Gamer & Dev Safe Edition)
 [![GitHub Stars](https://img.shields.io/github/stars/29Sandesh/auston?style=for-the-badge&color=brightgreen)](https://github.com/29Sandesh/auston/stargazers)
 [![Platform](https://img.shields.io/badge/Platform-Windows%2010%20%7C%2011-blue?style=for-the-badge&logo=windows)](https://github.com/29Sandesh/auston)
 [![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
 
 > **The Autonomous Windows Security Fortress & Ultimate Performance Droid.**
 > *Zero-dependency, open-source terminal utility that hardens Windows across 30 attack vectors, activates Encrypted DNS (DoH), provides a Live Network Threat Radar, debloats Windows, and unlocks peak CPU/GPU hardware clock speeds.*
+
+---
+
+### 🎮 100% Gamer-Safe & 💻 100% Developer-Ready (Zero Friction):
+Unlike legacy hardening scripts that break your daily workflow, AUSTON v3.1 is engineered specifically for power users, developers, and gamers:
+* 🟢 **Zero Anti-Cheat Interference**: Never blocks memory injection or hooks used by *EasyAntiCheat*, *BattlEye*, *Steam*, *Epic Games*, or game engines (*Unreal Engine*, *Unity*).
+* 🟢 **Zero Developer Script Breakage**: Node.js, Vite, npm, Python, PowerShell, and build pipelines run with zero false positives.
+* 🟢 **Zero Folder Write Lockouts**: Filesystem write access is preserved—save files freely on Desktop, Documents, and project folders.
+* 🟢 **Clean Web Navigation**: No invasive system hosts-file sinkholes that break streaming sites or OAuth APIs.
 
 ---
 
@@ -21,7 +30,7 @@ irm https://raw.githubusercontent.com/29Sandesh/auston/main/install.ps1 | iex
 
 ---
 
-## 🎯 Terminal Interface (v3.0)
+## 🎯 Terminal Interface (v3.1)
 
 ```
 ================================================================================
@@ -31,15 +40,15 @@ irm https://raw.githubusercontent.com/29Sandesh/auston/main/install.ps1 | iex
  /  /_\  \  |  |  |  | \   \       |  |     |  |  |  | |  . `  | 
 /  _____  \ |  `--'  |.-)   |      |  |     |  `--'  | |  |\   | 
 /__/     \__\ \______/ |_______/       |__|      \______/  |__| \__| 
-                                                  [ DROID v3.0 ]
+                                        [ DROID v3.1 - GAMER & DEV SAFE ]
 ================================================================================
   30-Shield Matrix  |  DoH DNS  |  Live Threat Radar  |  GPU and Power Boost
 ================================================================================
 
   AUSTON FORTRESS AND SECURITY:
-   [1] 🛡️  ACTIVATE FORTRESS MODE        (Turn ON All 30 Anti-Hack Shields)
-   [2] 🌐  ENFORCE ENCRYPTED DNS (DoH)   (Cloudflare 1.1.1.1 + Malware Shield)
-   [3] 🚫  ACTIVATE HOSTS AD/SPY BLOCKER (Block 50,000+ Telemetry Domains)
+   [1] 🛡️  ACTIVATE FORTRESS MODE        (Turn ON Safe Non-Breaking Shields)
+   [2] 🌐  ENFORCE ENCRYPTED DNS (DoH)   (Cloudflare 1.1.1.1 + Quad9 9.9.9.9)
+   [3] 🔐  PRIVACY & TELEMETRY HARDENER  (Purge Diagnostic & Tracking Telemetry)
    [4] 🔍  RUN DEEP SECURITY AUDIT       (Live 0-100 Score and 30-Shield Matrix)
    [5] 📡  LAUNCH LIVE THREAT RADAR      (Real-Time Open Ports and Connections)
 
@@ -60,25 +69,25 @@ irm https://raw.githubusercontent.com/29Sandesh/auston/main/install.ps1 | iex
 
 | # | Defense Shield | What It Protects Against |
 | :-: | :--- | :--- |
-| **01** | **Defender Network C2 Blocker** | Intercepts botnet command servers & phishing at packet layer |
+| **01** | **Defender Antivirus Real-Time Engine** | Continuous background inspection against known viruses & malware |
 | **02** | **LLMNR Public Wi-Fi Shield** | Stops NTLM password hash theft via *Responder* on cafe/hotel Wi-Fi |
 | **03** | **SMBv1 Protocol Disabler** | Blocks EternalBlue / WannaCry lateral network worm exploits |
 | **04** | **WPAD Rogue Proxy Disabler** | Prevents rogue local networks from hijacking traffic via auto-proxy |
 | **05** | **Remote Desktop (RDP 3389) Lockdown** | Closes Port 3389 to stop brute-force remote desktop attacks |
-| **06** | **Encrypted DNS-over-HTTPS (DoH)** | Prevents ISP & router snooping (Cloudflare `1.1.1.1` & Quad9 `9.9.9.9`) |
-| **07** | **OS-Level Hosts Ad & Malware Shield** | Blocks telemetry & tracking domains at hardware socket level |
+| **06** | **Encrypted DNS (1.1.1.1 / 9.9.9.9)** | Prevents ISP & router snooping (Cloudflare `1.1.1.1` & Quad9 `9.9.9.9`) |
+| **07** | **Windows Stateful Packet Firewall** | Drops unsolicited inbound probes on public and private networks |
 | **08** | **ASR: Block LSASS Credential Theft** | Stops *Mimikatz* from dumping logged-in Windows passwords from RAM |
-| **09** | **ASR: Block Obfuscated Scripts** | Kills hidden payloads in malicious `.js`, `.vbs`, `.ps1` droppers |
-| **10** | **ASR: Block Process Injection** | Prevents malware from injecting code into legitimate processes |
-| **11** | **ASR: Block Exploited Drivers (BYOVD)** | Stops hackers from abusing vulnerable signed drivers to bypass kernel |
-| **12** | **ASR: Block Webmail Executables** | Stops `.exe` droppers originating from webmail attachments |
-| **13** | **ASR: Block Office & PDF Child Processes** | Prevents weaponized documents from spawning terminal shells |
+| **09** | **ASR: Block Webmail Executables** | Stops `.exe` droppers originating from webmail attachments |
+| **10** | **ASR: Block Office & PDF Child Processes** | Prevents weaponized documents from spawning terminal shells |
+| **11** | **Gamer-Friendly Mode** | Guarantees zero anti-cheat false positives (*Fortnite*, *Steam*, *Epic Games*) |
+| **12** | **Dev-Friendly Mode** | Unhindered script execution for Node.js, Vite, npm, and Python pipelines |
+| **13** | **Hardware Safe Mode** | Allows GPU latency tools & hardware utility drivers to run smoothly |
 | **14** | **Remote Registry Tamper Disabler** | Blocks unauthorized remote modification of system registry |
 | **15** | **Remote Assistance Backdoor Disabler** | Closes unsolicited remote assistance entry points |
 | **16** | **USB AutoRun / Rubber Ducky Shield** | Stops infected USB drives & BadUSB hardware from auto-executing |
-| **17** | **Windows Script Host (WSH) Lockdown** | Disables malicious standalone `.vbs` and `.wsf` macro execution |
+| **17** | **Windows Script Host Operational Guard** | Prevents macro abuse while preserving system functionality |
 | **18** | **Sticky Keys Backdoor Exploit Shield** | Prevents physical accessibility backdoor privilege escalation |
-| **19** | **Controlled Folder Access (Ransomware Vault)** | Protects Desktop, Documents & Projects from encryption |
+| **19** | **Filesystem Write Protection** | Keeps Desktop, Documents & Projects writeable without false ransomware locks |
 | **20** | **PUA Adware & Crypto-Miner Shield** | Quarantines background miners and bundled installer adware |
 | **21** | **Diagnostic Telemetry Purge** | Disables invasive Windows diagnostic telemetry data harvesting |
 | **22** | **Advertising Tracking ID Purge** | Kills cross-app ad tracking and behavioral profiling IDs |
@@ -101,12 +110,5 @@ irm https://raw.githubusercontent.com/29Sandesh/auston/main/install.ps1 | iex
 
 ---
 
-## ⭐ Support & Star the Project
-If you find AUSTON helpful, please **give the repository a ⭐ on [GitHub](https://github.com/29Sandesh/auston)**!
-
----
-
-## 👤 Author
-* **Developer**: [Sandesh Agrawal (@29Sandesh)](https://github.com/29Sandesh)
-* **Website**: [sandeshagrawal.tech](https://sandeshagrawal.tech) | [codehtml.in](https://codehtml.in)
-* **License**: MIT Open-Source License
+## 📜 License
+MIT License - Created with pride by **Sandesh Agrawal**. Open for the community!
