@@ -1,9 +1,15 @@
 @echo off
-title AUSTON v3.0 - SECURITY & PERFORMANCE DROID
+setlocal
+title AUSTON v3.1 - AUTONOMOUS SECURITY & PERFORMANCE DROID
+cd /d "%~dp0"
+
+:: Check for administrative permissions
 net session >nul 2>&1
 if %errorLevel% neq 0 (
-    powershell -NoProfile -ExecutionPolicy Bypass -Command  Start-Process -Verb RunAs -FilePath powershell.exe -ArgumentList -NoProfile -ExecutionPolicy Bypass -File ""C:\Users\OMEN\Desktop\Projects\03_AI_and_Automation\auston\auston.ps1"" 
+    echo [*] Requesting Administrator privileges for AUSTON...
+    powershell -NoProfile -ExecutionPolicy Bypass -Command "Start-Process powershell.exe -ArgumentList @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', '%~dp0auston.ps1') -Verb RunAs"
     exit /b
 )
-powershell -NoProfile -ExecutionPolicy Bypass -File  C:\Users\OMEN\Desktop\Projects\03_AI_and_Automation\auston\auston.ps1
-pause
+
+powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0auston.ps1" %*
+if %errorlevel% neq 0 pause

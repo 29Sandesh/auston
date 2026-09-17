@@ -13,6 +13,29 @@ param (
 $Host.UI.RawUI.WindowTitle = 'AUSTON v3.1 - AUTONOMOUS SECURITY & PERFORMANCE DROID'
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
+# Ensure Administrator Privileges
+$isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+if (-not $isAdmin) {
+    if ([Environment]::UserInteractive) {
+        $scriptPath = $PSCommandPath
+        if (-not $scriptPath) { $scriptPath = "$PSScriptRoot\auston.ps1" }
+        
+        $argList = @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "`"$scriptPath`"")
+        if ($Fortress) { $argList += "-Fortress" }
+        if ($Performance) { $argList += "-Performance" }
+        if ($Audit) { $argList += "-Audit" }
+        if ($Radar) { $argList += "-Radar" }
+        if ($Restore) { $argList += "-Restore" }
+        
+        try {
+            Start-Process powershell.exe -ArgumentList $argList -Verb RunAs
+            exit
+        } catch {
+            Write-Host "[!] Notice: Running without Administrator privileges. Some settings may be read-only." -ForegroundColor Yellow
+        }
+    }
+}
+
 function Show-Banner {
     Clear-Host
     Write-Host '================================================================================' -ForegroundColor Cyan
@@ -46,10 +69,11 @@ function Get-SecurityAudit {
     $score = 0
     $total = 30
 
-    $pref = Get-MpPreference
+    $pref = Get-MpPreference -ErrorAction SilentlyContinue
+    $status = Get-MpComputerStatus -ErrorAction SilentlyContinue
 
     # Category A: Network and Public Wi-Fi (7)
-    $results['Defender Antivirus Real-Time Engine'] = ($pref.DisableRealtimeMonitoring -ne $true)
+    $results['Defender Antivirus Real-Time Engine'] = ($pref.DisableRealtimeMonitoring -ne $true -or $status.RealTimeProtectionEnabled -eq $true)
     
     $llmnr = (Get-ItemProperty 'HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient' -ErrorAction SilentlyContinue).EnableMulticast
     $results['LLMNR Public Wi-Fi Hash Poisoning Shield'] = ($llmnr -eq 0)
@@ -63,11 +87,11 @@ function Get-SecurityAudit {
     $rdp = (Get-ItemProperty 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -ErrorAction SilentlyContinue).fDenyTSConnections
     $results['Remote Desktop (RDP Port 3389) Lockdown'] = ($rdp -eq 1)
 
-    $dnsServers = (Get-DnsClientServerAddress -AddressFamily IPv4 | Where-Object { $_.ServerAddresses.Count -gt 0 }).ServerAddresses
-    $results['Encrypted / Secure DNS (1.1.1.1 / 9.9.9.9)'] = ($dnsServers -contains '1.1.1.1' -or $dnsServers -contains '9.9.9.9')
+    $dnsServers = (Get-DnsClientServerAddress -AddressFamily IPv4 -ErrorAction SilentlyContinue | Where-Object { $_.ServerAddresses.Count -gt 0 }).ServerAddresses
+    $results['Encrypted / Secure DNS (1.1.1.1 / 9.9.9.9)'] = ($dnsServers -contains '1.1.1.1' -or $dnsServers -contains '9.9.9.9' -or $dnsServers -contains '1.0.0.1' -or $dnsServers -contains '149.112.112.112')
 
     $fw = Get-NetFirewallProfile -Profile Domain, Public, Private -ErrorAction SilentlyContinue
-    $results['Windows Stateful Packet Firewall Active'] = ($fw | Where-Object { $_.Enabled -eq $true }).Count -ge 1
+    $results['Windows Stateful Packet Firewall Active'] = (($fw | Where-Object { $_.Enabled -eq $true }).Count -ge 1)
 
     # Category B: Exploit and Credential Theft (Zero Game/Dev False Positives) (6)
     $asrIds = $pref.AttackSurfaceReductionRules_Ids
@@ -93,7 +117,8 @@ function Get-SecurityAudit {
     $wsh = (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows Script Host\Settings' -ErrorAction SilentlyContinue).Enabled
     $results['Windows Script Host Operational Status'] = ($wsh -eq 1 -or $null -eq $wsh)
 
-    $results['Sticky Keys Backdoor Exploit Shield'] = $true
+    $stickyIfeo = (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\sethc.exe' -ErrorAction SilentlyContinue).Debugger
+    $results['Sticky Keys Backdoor Exploit Shield'] = ($null -eq $stickyIfeo)
 
     # Category D: Anti-Malware, Privacy and Telemetry (12)
     # Controlled Folder Access is intentionally kept disabled to allow saving files freely
@@ -121,9 +146,9 @@ function Get-SecurityAudit {
     $feed = (Get-ItemProperty 'HKCU:\Software\Microsoft\Siuf\Rules' -ErrorAction SilentlyContinue).NumberOfSIUFInPeriod
     $results['Windows Feedback and Keylogger Telemetry Off'] = ($feed -eq 0)
 
-    $results['Real-Time Behavior and Heuristic Analysis'] = ($pref.BehaviorMonitorEnabled -eq $true)
-    $results['IOAV Cloud Download Inspection'] = ($pref.IoavProtectionEnabled -eq $true)
-    $results['Antivirus Signatures Up-to-Date'] = ($pref.AntivirusSignatureAge -le 3)
+    $results['Real-Time Behavior and Heuristic Analysis'] = ($status.BehaviorMonitorEnabled -eq $true -or $pref.DisableBehaviorMonitoring -eq $false)
+    $results['IOAV Cloud Download Inspection'] = ($status.IoavProtectionEnabled -eq $true -or $pref.DisableIOAVProtection -eq $false)
+    $results['Antivirus Signatures Up-to-Date'] = ($status.AntivirusSignatureAge -le 3)
 
     # Calculate Score
     foreach ($k in $results.Keys) {
@@ -140,15 +165,14 @@ function Get-SecurityAudit {
 
     $i = 1
     foreach ($k in $results.Keys) {
-        $status = if ($results[$k]) { '[ACTIVE  OK]' } else { '[VULNERABLE]' }
+        $statusText = if ($results[$k]) { '[ACTIVE  OK]' } else { '[VULNERABLE]' }
         $color = if ($results[$k]) { 'Green' } else { 'Red' }
         Write-Host (" {0:D2}. {1,-46} : " -f $i, $k) -NoNewline
-        Write-Host $status -ForegroundColor $color
+        Write-Host $statusText -ForegroundColor $color
         $i++
     }
     Write-Host '--------------------------------------------------------------------------------' -ForegroundColor Gray
     Write-Host ''
-    return $results
 }
 
 function Enable-FortressMode {
@@ -159,16 +183,20 @@ function Enable-FortressMode {
     Show-ProgressAnim 'Disabling LLMNR (Public Wi-Fi Credential Poisoning)'
     $dns = 'HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient'
     if (-not (Test-Path $dns)) { New-Item -Path $dns -Force | Out-Null }
-    Set-ItemProperty -Path $dns -Name 'EnableMulticast' -Value 0 -Type DWord -Force
+    Set-ItemProperty -Path $dns -Name 'EnableMulticast' -Value 0 -Type DWord -Force -ErrorAction SilentlyContinue
 
     Show-ProgressAnim 'Disabling Legacy Insecure SMBv1 Protocol (WannaCry / Worm Kill)'
     Set-SmbServerConfiguration -EnableSMB1Protocol $false -Force -ErrorAction SilentlyContinue
 
     Show-ProgressAnim 'Disabling WPAD Rogue Proxy AutoDetect (Wi-Fi Hijacking Shield)'
-    Set-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings' -Name 'AutoDetect' -Value 0 -Type DWord -Force -ErrorAction SilentlyContinue
+    $inet = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings'
+    if (-not (Test-Path $inet)) { New-Item -Path $inet -Force | Out-Null }
+    Set-ItemProperty -Path $inet -Name 'AutoDetect' -Value 0 -Type DWord -Force -ErrorAction SilentlyContinue
 
     Show-ProgressAnim 'Locking Down Remote Desktop (RDP Port 3389)'
-    Set-ItemProperty 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -Name 'fDenyTSConnections' -Value 1 -Type DWord -Force -ErrorAction SilentlyContinue
+    $ts = 'HKLM:\System\CurrentControlSet\Control\Terminal Server'
+    if (-not (Test-Path $ts)) { New-Item -Path $ts -Force | Out-Null }
+    Set-ItemProperty -Path $ts -Name 'fDenyTSConnections' -Value 1 -Type DWord -Force -ErrorAction SilentlyContinue
 
     Show-ProgressAnim 'Activating Safe Enterprise ASR Rules (LSASS, Webmail, Office/PDF)'
     $safeAsrs = @(
@@ -196,15 +224,20 @@ function Enable-FortressMode {
     # Ensure Network Protection stays DISABLED to prevent blocking local dev servers
     Set-MpPreference -EnableNetworkProtection Disabled -ErrorAction SilentlyContinue
 
+    Show-ProgressAnim 'Enforcing Antivirus Core Real-Time & Heuristic Monitoring'
+    Set-MpPreference -DisableRealtimeMonitoring $false -DisableBehaviorMonitoring $false -DisableIOAVProtection $false -ErrorAction SilentlyContinue
+
     Show-ProgressAnim 'Disabling Remote Registry and Assistance Backdoors'
     Stop-Service RemoteRegistry -ErrorAction SilentlyContinue
     Set-Service RemoteRegistry -StartupType Disabled -ErrorAction SilentlyContinue
-    Set-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Control\Remote Assistance' -Name 'fAllowToGetHelp' -Value 0 -Type DWord -Force -ErrorAction SilentlyContinue
+    $ra = 'HKLM:\SYSTEM\CurrentControlSet\Control\Remote Assistance'
+    if (-not (Test-Path $ra)) { New-Item -Path $ra -Force | Out-Null }
+    Set-ItemProperty -Path $ra -Name 'fAllowToGetHelp' -Value 0 -Type DWord -Force -ErrorAction SilentlyContinue
 
     Show-ProgressAnim 'Hardening USB AutoRun and BadUSB Exploit Protection'
     $exp = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer'
     if (-not (Test-Path $exp)) { New-Item -Path $exp -Force | Out-Null }
-    Set-ItemProperty -Path $exp -Name 'NoDriveTypeAutoRun' -Value 255 -Type DWord -Force
+    Set-ItemProperty -Path $exp -Name 'NoDriveTypeAutoRun' -Value 255 -Type DWord -Force -ErrorAction SilentlyContinue
 
     Show-ProgressAnim 'Enabling PUA Adware and Crypto-Miner Quarantines'
     Set-MpPreference -PUAProtection Enabled -ErrorAction SilentlyContinue
@@ -212,23 +245,23 @@ function Enable-FortressMode {
     Show-ProgressAnim 'Purging Diagnostic Telemetry and Location Beacons'
     $tel = 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection'
     if (-not (Test-Path $tel)) { New-Item -Path $tel -Force | Out-Null }
-    Set-ItemProperty -Path $tel -Name 'AllowTelemetry' -Value 0 -Type DWord -Force
+    Set-ItemProperty -Path $tel -Name 'AllowTelemetry' -Value 0 -Type DWord -Force -ErrorAction SilentlyContinue
 
     $ad = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo'
     if (-not (Test-Path $ad)) { New-Item -Path $ad -Force | Out-Null }
-    Set-ItemProperty -Path $ad -Name 'Enabled' -Value 0 -Type DWord -Force
+    Set-ItemProperty -Path $ad -Name 'Enabled' -Value 0 -Type DWord -Force -ErrorAction SilentlyContinue
 
     $clip = 'HKCU:\Software\Microsoft\Clipboard'
     if (-not (Test-Path $clip)) { New-Item -Path $clip -Force | Out-Null }
-    Set-ItemProperty -Path $clip -Name 'EnableCloudClipboard' -Value 0 -Type DWord -Force
+    Set-ItemProperty -Path $clip -Name 'EnableCloudClipboard' -Value 0 -Type DWord -Force -ErrorAction SilentlyContinue
 
     $loc = 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors'
     if (-not (Test-Path $loc)) { New-Item -Path $loc -Force | Out-Null }
-    Set-ItemProperty -Path $loc -Name 'DisableLocation' -Value 1 -Type DWord -Force
+    Set-ItemProperty -Path $loc -Name 'DisableLocation' -Value 1 -Type DWord -Force -ErrorAction SilentlyContinue
 
     $siuf = 'HKCU:\Software\Microsoft\Siuf\Rules'
     if (-not (Test-Path $siuf)) { New-Item -Path $siuf -Force | Out-Null }
-    Set-ItemProperty -Path $siuf -Name 'NumberOfSIUFInPeriod' -Value 0 -Type DWord -Force
+    Set-ItemProperty -Path $siuf -Name 'NumberOfSIUFInPeriod' -Value 0 -Type DWord -Force -ErrorAction SilentlyContinue
 
     Write-Host ''
     Write-Host '[AUSTON FORTRESS SUCCESS] System hardened! Zero false positives for gaming & dev.' -ForegroundColor Green
@@ -238,12 +271,14 @@ function Enable-EncryptedDNS {
     Write-Host ''
     Write-Host '[*] CONFIGURING ENCRYPTED DNS (Cloudflare 1.1.1.1 + Quad9 9.9.9.9)...' -ForegroundColor Cyan
     
-    $adapters = Get-NetAdapter | Where-Object { $_.Status -eq 'Up' }
+    $adapters = Get-NetAdapter -ErrorAction SilentlyContinue | Where-Object { $_.Status -eq 'Up' }
     foreach ($a in $adapters) {
         Show-ProgressAnim "Configuring Secure DNS for $($a.Name)"
         try {
-            Set-DnsClientServerAddress -InterfaceAlias $a.Name -ServerAddresses ('1.1.1.1', '1.0.0.1', '9.9.9.9') -ErrorAction Stop
-        } catch {}
+            Set-DnsClientServerAddress -InterfaceAlias $a.Name -ServerAddresses @('1.1.1.1', '1.0.0.1', '9.9.9.9') -ErrorAction Stop
+        } catch {
+            Write-Host " [!] Notice: Administrator privileges required to change DNS on $($a.Name)" -ForegroundColor DarkYellow
+        }
     }
     Clear-DnsClientCache
     Write-Host '[SUCCESS] Cloudflare & Quad9 High-Speed Encrypted DNS Activated!' -ForegroundColor Green
@@ -256,19 +291,19 @@ function Enable-PrivacyTelemetryHardener {
     Show-ProgressAnim 'Purging Advertising ID and Behavioral Profiling'
     $ad = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo'
     if (-not (Test-Path $ad)) { New-Item -Path $ad -Force | Out-Null }
-    Set-ItemProperty -Path $ad -Name 'Enabled' -Value 0 -Type DWord -Force
+    Set-ItemProperty -Path $ad -Name 'Enabled' -Value 0 -Type DWord -Force -ErrorAction SilentlyContinue
 
     Show-ProgressAnim 'Disabling Activity History and Timeline Sync'
     $hist = 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\System'
     if (-not (Test-Path $hist)) { New-Item -Path $hist -Force | Out-Null }
-    Set-ItemProperty -Path $hist -Name 'EnableActivityFeed' -Value 0 -Type DWord -Force
-    Set-ItemProperty -Path $hist -Name 'PublishUserActivities' -Value 0 -Type DWord -Force
-    Set-ItemProperty -Path $hist -Name 'UploadUserActivities' -Value 0 -Type DWord -Force
+    Set-ItemProperty -Path $hist -Name 'EnableActivityFeed' -Value 0 -Type DWord -Force -ErrorAction SilentlyContinue
+    Set-ItemProperty -Path $hist -Name 'PublishUserActivities' -Value 0 -Type DWord -Force -ErrorAction SilentlyContinue
+    Set-ItemProperty -Path $hist -Name 'UploadUserActivities' -Value 0 -Type DWord -Force -ErrorAction SilentlyContinue
 
     Show-ProgressAnim 'Disabling In-App Diagnostics and Keylogger Frequency Telemetry'
     $siuf = 'HKCU:\Software\Microsoft\Siuf\Rules'
     if (-not (Test-Path $siuf)) { New-Item -Path $siuf -Force | Out-Null }
-    Set-ItemProperty -Path $siuf -Name 'NumberOfSIUFInPeriod' -Value 0 -Type DWord -Force
+    Set-ItemProperty -Path $siuf -Name 'NumberOfSIUFInPeriod' -Value 0 -Type DWord -Force -ErrorAction SilentlyContinue
 
     Write-Host '[SUCCESS] Privacy Hardened without breaking websites or web development!' -ForegroundColor Green
 }
@@ -281,10 +316,15 @@ function Show-ThreatRadar {
     Write-Host " Press [Enter] to return to Main Menu`n" -ForegroundColor Gray
     
     Write-Host '--- ACTIVE LISTENING PORTS (Local Services) ---' -ForegroundColor Cyan
-    Get-NetTCPConnection -State Listen -ErrorAction SilentlyContinue | Where-Object { $_.LocalAddress -ne '127.0.0.1' -and $_.LocalAddress -ne '::1' } | Select-Object -First 10 LocalAddress, LocalPort, OwningProcess | Format-Table -AutoSize
+    Get-NetTCPConnection -State Listen -ErrorAction SilentlyContinue | 
+        Where-Object { $_.LocalAddress -ne '127.0.0.1' -and $_.LocalAddress -ne '::1' } | 
+        Select-Object -First 10 LocalAddress, LocalPort, @{Name='Process'; Expression={(Get-Process -Id $_.OwningProcess -ErrorAction SilentlyContinue).ProcessName}}, OwningProcess | 
+        Format-Table -AutoSize
     
     Write-Host '--- ACTIVE ESTABLISHED CONNECTIONS (Internet Traffic) ---' -ForegroundColor Cyan
-    Get-NetTCPConnection -State Established -ErrorAction SilentlyContinue | Select-Object -First 12 LocalPort, RemoteAddress, RemotePort, OwningProcess | Format-Table -AutoSize
+    Get-NetTCPConnection -State Established -ErrorAction SilentlyContinue | 
+        Select-Object -First 12 LocalPort, RemoteAddress, RemotePort, @{Name='Process'; Expression={(Get-Process -Id $_.OwningProcess -ErrorAction SilentlyContinue).ProcessName}}, OwningProcess | 
+        Format-Table -AutoSize
     
     Read-Host 'Press Enter to return to menu...'
 }
@@ -302,9 +342,16 @@ function Enable-UltimatePerformance {
         powercfg /setactive $guid
     } else {
         $out = powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61
-        $schemes2 = powercfg /list
-        $guid2 = ($schemes2 | Select-String -Pattern '([a-f0-9\-]{36}).*Ultimate Performance').Matches[0].Groups[1].Value
-        powercfg /setactive $guid2
+        $dupMatch = $out | Select-String -Pattern '([a-f0-9\-]{36})'
+        if ($dupMatch) {
+            $guid = $dupMatch.Matches[0].Groups[1].Value
+            powercfg /setactive $guid
+        } else {
+            $highMatch = $schemes | Select-String -Pattern '([a-f0-9\-]{36}).*(?:High [Pp]erformance|Ultimate)'
+            if ($highMatch) {
+                powercfg /setactive $highMatch.Matches[0].Groups[1].Value
+            }
+        }
     }
 
     Show-ProgressAnim 'Re-Trimming NVMe SSD Flash Storage Blocks'
@@ -376,7 +423,7 @@ function Restore-SafeDefaults {
     Set-MpPreference -EnableNetworkProtection Disabled -ErrorAction SilentlyContinue
 
     Show-ProgressAnim 'Purging All Attack Surface Reduction (ASR) Rules'
-    $pref = Get-MpPreference
+    $pref = Get-MpPreference -ErrorAction SilentlyContinue
     if ($pref.AttackSurfaceReductionRules_Ids) {
         foreach ($id in $pref.AttackSurfaceReductionRules_Ids) {
             try {
@@ -423,7 +470,8 @@ function Restore-SafeDefaults {
 
     Show-ProgressAnim 'Restoring Balanced Power Profile'
     $schemes = powercfg /list
-    $bal = ($schemes | Select-String -Pattern '([a-f0-9\-]{36}).*Balanced').Matches[0].Groups[1].Value
+    $balMatch = $schemes | Select-String -Pattern '([a-f0-9\-]{36}).*Balanced'
+    $bal = if ($balMatch) { $balMatch.Matches[0].Groups[1].Value } else { '381b4222-f694-41f0-9685-ff5bb260df2e' }
     if ($bal) { powercfg /setactive $bal }
 
     Write-Host ''
@@ -476,9 +524,8 @@ while ($true) {
             Write-Host '[SUCCESS] NVMe SSD Re-Trimmed and Memory Cache Flushed.' -ForegroundColor Green
             Read-Host "`nPress Enter to continue..." 
         }
-        'D' { Restore-SafeDefaults; Read-Host "`nPress Enter to continue..." }
-        'd' { Restore-SafeDefaults; Read-Host "`nPress Enter to continue..." }
-        '0' { Write-Host "`nExiting AUSTON Droid. Stay safe!" -ForegroundColor Cyan; exit }
-        default { Write-Host 'Invalid choice!' -ForegroundColor Red; Start-Sleep -Seconds 1 }
+        { $_ -in 'D', 'd' } { Restore-SafeDefaults; Read-Host "`nPress Enter to continue..." }
+        { $_ -in '0', 'q', 'Q', 'exit' } { Write-Host "`nExiting AUSTON Droid. Stay safe!`n" -ForegroundColor Cyan; exit }
+        default { Write-Host '  Invalid choice! Please select an option from the menu.' -ForegroundColor Red; Start-Sleep -Seconds 1 }
     }
 }
