@@ -46,6 +46,7 @@ irm https://raw.githubusercontent.com/29Sandesh/auston/main/install.ps1 | iex
 ================================================================================
 
   AUSTON FORTRESS AND SECURITY:
+   [A] 🛡️  ACTIVATE ALL SHIELDS          (Type "ALL" for 100% Complete Defense Matrix)
    [1] 🛡️  ACTIVATE FORTRESS MODE        (Turn ON Safe Non-Breaking Shields)
    [2] 🌐  ENFORCE ENCRYPTED DNS (DoH)   (Cloudflare 1.1.1.1 + Quad9 9.9.9.9)
    [3] 🔐  PRIVACY & TELEMETRY HARDENER  (Purge Diagnostic & Tracking Telemetry)
@@ -62,6 +63,8 @@ irm https://raw.githubusercontent.com/29Sandesh/auston/main/install.ps1 | iex
    [D] 🔄  RESTORE SAFE DEFAULTS         (Revert Settings to Windows Standard)
    [0] 🚪  EXIT TERMINAL
 ```
+
+> 💡 **Instant Shield Deployment**: Type `all` or `a` into the menu prompt (or run `auston all` from any terminal) to deploy all 30 security shields, enforce encrypted DNS, and purge telemetry in one click.
 
 ---
 

@@ -3,15 +3,20 @@
 # 100% Zero-Friction: No game anti-cheat interference, no dev script blocks, no folder lockouts.
 
 param (
+    [switch]$All,
     [switch]$Fortress,
     [switch]$Performance,
     [switch]$Audit,
     [switch]$Radar,
-    [switch]$Restore
+    [switch]$Restore,
+    [Parameter(Position=0)]
+    [string]$Action
 )
 
 $Host.UI.RawUI.WindowTitle = 'AUSTON v3.1 - AUTONOMOUS SECURITY & PERFORMANCE DROID'
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+
+$isAllRequested = ($All -or ($Action -eq 'all') -or ($args -contains 'all'))
 
 # Ensure Administrator Privileges
 $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
@@ -21,6 +26,7 @@ if (-not $isAdmin) {
         if (-not $scriptPath) { $scriptPath = "$PSScriptRoot\auston.ps1" }
         
         $argList = @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "`"$scriptPath`"")
+        if ($isAllRequested) { $argList += "-All" }
         if ($Fortress) { $argList += "-Fortress" }
         if ($Performance) { $argList += "-Performance" }
         if ($Audit) { $argList += "-Audit" }
@@ -308,6 +314,44 @@ function Enable-PrivacyTelemetryHardener {
     Write-Host '[SUCCESS] Privacy Hardened without breaking websites or web development!' -ForegroundColor Green
 }
 
+function Enable-AllShields {
+    Write-Host ''
+    Write-Host '================================================================================' -ForegroundColor Cyan
+    Write-Host '   🛡️  ACTIVATING COMPLETE SHIELD MATRIX (ALL 30 DEFENSES AT ONCE)...' -ForegroundColor Cyan
+    Write-Host '================================================================================' -ForegroundColor Cyan
+    Write-Host ''
+
+    # 1. Enforce Core Antivirus Real-time, Behavior, IOAV
+    Show-ProgressAnim 'Enforcing Antivirus Core Real-Time & Heuristic Monitoring'
+    Set-MpPreference -DisableRealtimeMonitoring $false -DisableBehaviorMonitoring $false -DisableIOAVProtection $false -ErrorAction SilentlyContinue
+
+    # 2. Stateful Packet Firewall across Domain, Public, Private
+    Show-ProgressAnim 'Activating Windows Stateful Packet Firewall'
+    Set-NetFirewallProfile -Profile Domain, Public, Private -Enabled True -ErrorAction SilentlyContinue
+
+    # 3. Fortress Mode (LLMNR, SMBv1, WPAD, RDP, ASR rules, Remote Registry/Assistance, BadUSB, PUA, Telemetry)
+    Enable-FortressMode
+
+    # 4. Encrypted DNS (DoH)
+    Enable-EncryptedDNS
+
+    # 5. Privacy & Telemetry Hardener
+    Enable-PrivacyTelemetryHardener
+
+    # 6. Signature freshness
+    Show-ProgressAnim 'Checking and Updating Defender Threat Signatures'
+    Update-MpSignature -ErrorAction SilentlyContinue
+
+    Write-Host ''
+    Write-Host '================================================================================' -ForegroundColor Green
+    Write-Host '  ✅ ALL 30 SHIELDS DEPLOYED! Windows Security Fortress is 100% Armed.' -ForegroundColor Green
+    Write-Host '================================================================================' -ForegroundColor Green
+    Write-Host ''
+
+    # Run Deep Security Audit to show updated score
+    Get-SecurityAudit
+}
+
 function Show-ThreatRadar {
     Show-Banner
     Write-Host '================================================================================' -ForegroundColor Cyan
@@ -479,6 +523,7 @@ function Restore-SafeDefaults {
 }
 
 # --- CLI ARGUMENT EXECUTION ---
+if ($isAllRequested) { Show-Banner; Enable-AllShields; exit }
 if ($Fortress) { Show-Banner; Enable-FortressMode; Get-SecurityAudit; exit }
 if ($Performance) { Show-Banner; Enable-UltimatePerformance; exit }
 if ($Audit) { Show-Banner; Get-SecurityAudit; exit }
@@ -489,7 +534,8 @@ if ($Restore) { Show-Banner; Restore-SafeDefaults; exit }
 while ($true) {
     Show-Banner
     Write-Host '  AUSTON FORTRESS AND SECURITY:' -ForegroundColor Yellow
-    Write-Host '   [1] ACTIVATE FORTRESS MODE        (Turn ON Safe Non-Breaking Shields)' -ForegroundColor Green
+    Write-Host '   [A] ACTIVATE ALL SHIELDS          (Type "ALL" for 100% Complete Defense Matrix)' -ForegroundColor Green
+    Write-Host '   [1] ACTIVATE FORTRESS MODE        (Turn ON Safe Non-Breaking Shields)' -ForegroundColor Cyan
     Write-Host '   [2] ENFORCE ENCRYPTED DNS (DoH)   (Cloudflare 1.1.1.1 + Quad9 9.9.9.9)' -ForegroundColor Cyan
     Write-Host '   [3] PRIVACY & TELEMETRY HARDENER  (Purge Diagnostic & Tracking Telemetry)' -ForegroundColor Magenta
     Write-Host '   [4] RUN DEEP SECURITY AUDIT       (Live 0-100 Score and 30-Shield Matrix)' -ForegroundColor Yellow
@@ -506,9 +552,11 @@ while ($true) {
     Write-Host '   [0] EXIT TERMINAL' -ForegroundColor Red
     Write-Host '  ============================================================================' -ForegroundColor Gray
     
-    $choice = Read-Host '  Enter Choice [0-9 or D]'
+    $choice = Read-Host '  Enter Choice [0-9, A, ALL, or D]'
+    if ($choice) { $choice = $choice.Trim() }
     
     switch ($choice) {
+        { $_ -in 'A', 'a', 'all', 'ALL', 'All' } { Enable-AllShields; Read-Host "`nPress Enter to continue..." }
         '1' { Enable-FortressMode; Read-Host "`nPress Enter to continue..." }
         '2' { Enable-EncryptedDNS; Read-Host "`nPress Enter to continue..." }
         '3' { Enable-PrivacyTelemetryHardener; Read-Host "`nPress Enter to continue..." }
